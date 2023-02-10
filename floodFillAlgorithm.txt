@@ -1,0 +1,46 @@
+class Solution
+{
+    
+    public void doDfsTraversal(int sr,int sc,int[][] image,int[][] ans,
+    int newColor,int[] deltaRow,int[] deltaCol,int initialColor){
+        
+        ans[sr][sc] = newColor;
+        
+        int n = image.length;
+        int m = image[0].length;
+        
+        for(int i=0;i<4;i++){
+            int nrow = sr+deltaRow[i];
+            int ncol = sc+deltaCol[i];
+            
+            
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && image[nrow][ncol] == initialColor && ans[nrow][ncol] !=newColor){
+                
+                doDfsTraversal(nrow,ncol,image,ans,newColor,deltaRow,deltaCol,initialColor);
+            }
+            
+            
+        }
+    }
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor)
+    {
+        // Code here 
+        
+        int rowL = image.length;
+        int colL = image[0].length;
+        int ans[][] = image;
+        
+        int deltaRow[] = {-1,0,1,0};
+        int deltaCol[] = {0,1,0,-1};
+        
+        int initialColor = image[sr][sc];
+        
+        doDfsTraversal(sr,sc,image,ans,newColor,deltaRow,deltaCol,initialColor);
+        
+        
+        
+        return ans;
+        
+        
+    }
+}

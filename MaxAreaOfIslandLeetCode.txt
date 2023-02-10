@@ -1,0 +1,132 @@
+// Solution using DFS traversal
+
+class Solution {
+    
+    int areaCount = 1;
+    public void dfs(int row,int col,int[][] grid,int visited[][],int[] deltaRow,int[] deltaCol){
+         
+         visited[row][col] = 1;
+         int n= grid.length;
+         int m = grid[0].length;
+
+         for(int i=0;i<4;i++){
+
+             int nrow = row+deltaRow[i];
+             int ncol = col+deltaCol[i];
+
+
+             if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && grid[nrow][ncol] == 1 && visited[nrow][ncol]  == 0){
+                     areaCount++;
+                   //  System.out.println("hi");
+                     dfs(nrow,ncol,grid,visited,deltaRow,deltaCol);
+             }
+         }
+
+         
+    }
+    public int maxAreaOfIsland(int[][] grid) {
+        
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int[][] visited = new int[rows][cols];
+        
+        int deltaRow[] = {-1,0,1,0};
+        int deltaCol[] = {0,1,0,-1};
+        
+        
+       int areaMax = Integer.MIN_VALUE;
+
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                if(grid[i][j] == 1){
+                   // int areaCount = 1;
+                    dfs(i,j,grid,visited,deltaRow,deltaCol);
+
+                    areaMax = Math.max(areaCount,areaMax);
+                    areaCount = 1;
+                }
+            }
+        }
+
+        return areaMax == Integer.MIN_VALUE?0:areaMax;
+    }
+}
+
+==================================================================================
+
+// Solution using bfs traversal
+
+class Pair{
+    int first;
+    int second;
+
+    Pair(int row,int col){
+        first  = row;
+        second = col;
+    }
+}
+class Solution {
+
+    int countArea = 1;
+
+    public void bfs(int row,int col,int[][] grid,int[][] visited){
+        visited[row][col] = 1;
+
+        Queue<Pair> q = new LinkedList<>();
+
+        int deltaRow[] = {-1,0,1,0};
+        int deltaCol[] = {0,1,0,-1};
+
+        int n = grid.length;
+        int m = grid[0].length;
+
+        q.add(new Pair(row,col));
+
+        while(!q.isEmpty()){
+
+             int currRow = q.peek().first; 
+             int currCol = q.peek().second; 
+
+            
+             q.poll();
+
+           
+            for(int i=0;i<4;i++){
+                int nrow = currRow+deltaRow[i];
+                int ncol = currCol+deltaCol[i];
+            
+
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && grid[nrow][ncol] == 1 && visited[nrow][ncol] == 0){
+                    visited[nrow][ncol] = 1;
+                    countArea++;
+                    q.add(new Pair(nrow,ncol));
+                }
+            }
+        }
+
+
+    }
+    public int maxAreaOfIsland(int[][] grid) {
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        int visited[][] = new int[rows][cols];
+
+       
+       int count = 0;
+       int maxArea = Integer.MIN_VALUE;
+
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                if(grid[i][j] == 1 && visited[i][j] == 0){
+                     bfs(i,j,grid,visited);
+                     maxArea = Math.max(maxArea,countArea);
+                     countArea = 1;
+                }
+            }
+        }
+    return maxArea == Integer.MIN_VALUE?0:maxArea;
+        
+    }
+}
