@@ -1,0 +1,79 @@
+// this problem can be done using bfs algorithm as this algorithm moves step by step and can be helful in finding the nearest distance
+
+class Pair{
+    int rowCor;// row coordinate
+    int colCor;  // column coordinate
+    int distance; // distance
+    
+    Pair(int rowCor,int colCor,int distance){
+        this.rowCor = rowCor;
+        this.colCor = colCor;
+        this.distance = distance;
+    }
+}
+class Solution
+{
+    //Function to find distance of nearest 1 in the grid for each cell.
+    
+
+    public int[][] nearest(int[][] grid)
+    {
+        // Code here
+        
+        int rowSize = grid.length;
+        int colSize = grid[0].length;
+        
+        int nearOneDist[][] = new int[rowSize][colSize]; // for returning ans
+        
+        int visited[][] = new int[rowSize][colSize]; // for taking record for visited cell
+        
+        Queue<Pair> q = new LinkedList<>();
+        
+        // we will start from cells where we have ones and keep on visiting the neighbours in the bfs manner
+        
+        for(int i=0;i<rowSize;i++){
+            for(int j=0;j<colSize;j++){
+                if(grid[i][j] == 1){
+                    q.add(new Pair(i,j,0));
+                    visited[i][j] = 1;
+                    
+                }
+            }
+        }
+        
+        
+        // directions for traversing in all the four directions
+        
+        int deltaRow[] = {-1,0,1,0};
+        int deltaCol[] = {0,1,0,-1};
+        
+        while(!q.isEmpty()){
+            
+            int currRow = q.peek().rowCor;
+            int currCol = q.peek().colCor;
+            int dist = q.peek().distance;
+            
+            q.poll();
+           // System.out.println(currRow+" "+currCol+" "+dist);
+           
+            nearOneDist[currRow][currCol] = dist;
+            
+            for(int i=0;i<4;i++){
+                
+                int nrow = currRow+deltaRow[i];
+                int ncol = currCol+deltaCol[i];
+                
+                if(nrow>=0 && nrow<rowSize && ncol>=0 && ncol<colSize && visited[nrow][ncol] == 0){
+                    
+                      visited[nrow][ncol] = 1;
+                    q.add(new Pair(nrow,ncol,dist+1));
+                  
+                }
+            }
+            
+        }
+        
+        return nearOneDist;
+        
+    }
+}
