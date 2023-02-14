@@ -1,0 +1,84 @@
+ // this can be solved using dfs and bfs as well 
+
+  public void dfs(int row,int col,int visited[][],int grid[][], int deltaRow[],int deltaCol[]){
+
+        visited[row][col] = 1;
+        
+        int n = grid.length;
+        int m = grid[0].length;
+
+        for(int i=0;i<4;i++){
+            int nrow = row+deltaRow[i];
+            int ncol = col+deltaCol[i];
+            
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && visited[nrow][ncol] == 0 && grid[nrow][ncol] == 1){
+                dfs(nrow,ncol,visited,grid,deltaRow,deltaCol);
+            }
+
+        }
+
+
+    }
+    public int numEnclaves(int[][] grid) {
+
+        int n = grid.length; // row size
+        int m = grid[0].length; // column size;
+        
+        int visited[][] = new int[n][m];
+
+        int deltaRow[] = {-1,0,1,0};
+        int deltaCol[] = {0,1,0,-1};
+
+        // traversing the first row and the last row;
+
+        for(int i=0;i<m;i++){
+           
+            // first row
+            if(visited[0][i] == 0 && grid[0][i] == 1){
+                dfs(0,i,visited,grid,deltaRow,deltaCol);
+            }
+
+            //last row
+
+            if(visited[n-1][i] == 0 && grid[n-1][i] == 1){
+                dfs(n-1,i,visited,grid,deltaRow,deltaCol);
+            }
+        }
+
+
+        // traversing the first column and the last colum
+
+        for(int i=0;i<n;i++){
+            // first column
+            if(visited[i][0] == 0 && grid[i][0] == 1){
+                dfs(i,0,visited,grid,deltaRow,deltaCol);
+            }
+
+            // last column
+
+            if(visited[i][m-1] == 0 && grid[i][m-1] == 1){
+                dfs(i,m-1,visited,grid,deltaRow,deltaCol);
+            }
+        }
+       
+
+       int countEnclaves = 0;
+
+       for(int i=0;i<n;i++){
+           for(int j=0;j<m;j++){
+
+               if(visited[i][j] == 0 && grid[i][j] == 1){
+                   countEnclaves++;
+               }
+               //System.out.print(visited[i][j]+" ");
+           }
+
+          // System.out.println();
+       }
+        
+
+        return countEnclaves;
+
+
+    }
+}
