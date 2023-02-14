@@ -1,0 +1,64 @@
+class Pair{
+    int first;
+    int second;
+    int steps;
+    Pair(int first,int second,int steps){
+        this.first = first;
+        this.second = second;
+        this.steps = steps;
+    }
+}
+class Solution
+{
+    
+    
+    //Function to find out minimum steps Knight needs to reach target position.
+    public int minStepToReachTarget(int KnightPos[], int TargetPos[], int N)
+    {
+        // Code here
+        
+        
+        int visited[][] = new int[N][N]; // for keeping the track of the visited cells
+        int grid[][] = new int[N][N];
+        
+        
+        Queue<Pair> q = new LinkedList<>();
+        
+        q.add(new Pair(KnightPos[0]-1,KnightPos[1]-1,0));
+        visited[KnightPos[0]-1][KnightPos[1]-1] = 1;
+        
+        int targetRow = TargetPos[0]-1;
+        int targetCol = TargetPos[1]-1;
+        
+        
+        int deltaRow[] = {-2,-2,-1,1,2,2,1,-1};
+        int deltaCol[] = {-1,1,2,2,1,-1,-2,-2};
+        
+        while(!q.isEmpty()){
+            int currRow = q.peek().first;
+            int currCol = q.peek().second;
+            int dist = q.peek().steps;
+            q.poll();
+            
+            grid[currRow][currCol] = dist;
+            
+            for(int i=0;i<8;i++){
+                int nrow = currRow+deltaRow[i];
+                int ncol = currCol+deltaCol[i];
+                
+                if(nrow>=0 && nrow<N && ncol>=0 && ncol<N && visited[nrow][ncol] == 0){
+                    q.add(new Pair(nrow,ncol,dist+1));
+                    visited[nrow][ncol] = 1;
+                }
+            }
+        }
+        
+        
+        
+        
+        int ans = grid[targetRow][targetCol];
+        return ans;
+        
+        
+    }
+}
