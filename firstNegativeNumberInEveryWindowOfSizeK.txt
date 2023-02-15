@@ -1,0 +1,123 @@
+// Naive Approach=============O(N*K)
+
+
+class Compute {
+    
+    public long[] printFirstNegativeInteger(long A[], int N, int K)
+    {
+        
+        
+        int idx = 0;
+        
+        ArrayList<Long> arr = new ArrayList<>();
+        
+        for(int i=0;i<N-K+1;i++){
+            
+            int window = 0;
+            long val = 0;
+            for(int j=i;j<K+i;j++){
+                
+                window++;
+                
+                
+                if(A[j]<0){
+                   // ans[idx] = A[j];
+                    //idx++;
+                    arr.add(A[j]);
+                    val = A[j];
+                    break;
+                }
+            }
+            
+            
+            if(window == K && val == 0){
+                arr.add((long)0);
+            }
+            
+            
+        }
+        
+        long ans[] = new long[arr.size()];
+        
+        for(int i=0;i<arr.size();i++){
+            ans[i] = arr.get(i);
+        }
+        
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+// optimal approach====================================
+class Compute {
+    
+    public long[] printFirstNegativeInteger(long A[], int N, int K)
+    {
+        long ans[] = new long[N-K+1]; // maxelement in the ans would be N-K+1
+        
+        Queue<Long> q = new LinkedList<>();
+        
+        // variables for sliding window
+        int j = 0;  
+        int i = 0;
+        
+        // variable to store ans
+        int valIdx = 0;
+        
+        while(j<N){
+            
+              // if the element is negative we will simply push into the queue
+               if(A[j]<0){
+                   
+                q.add(A[j]);
+               }
+               
+              // j++;
+               
+        if(j-i+1<K) j++;
+        else if(j-i+1 == K){
+            
+            
+            // if the queue is empty it indicates that we dont have any negative element in the window
+            if(q.isEmpty()){
+                ans[valIdx] = 0;
+                valIdx++;
+                
+              
+                
+            }else{
+                
+                 ans[valIdx] = q.peek();
+                 valIdx++;
+                 
+                 
+                if(q.peek() == A[i]){
+                    q.poll();
+                   
+                    
+                }
+            }
+            
+            
+            i++;
+           j++;
+            
+            
+            
+        }
+        
+      
+        
+        
+        }
+        
+        
+        return ans;
+    }
+}

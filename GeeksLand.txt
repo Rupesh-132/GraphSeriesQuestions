@@ -1,0 +1,125 @@
+
+
+//User function Template for Java
+
+class Pair{
+    int first;
+    int second;
+    Pair(int first,int second){
+        this.first = first;
+        this.second = second;
+    }
+}
+
+class Solution{
+	int water_flow(int [][] mat, int N, int M) {
+		//Write your code here
+		
+		int indian[][] = new int[N][M];
+        
+        int arabian[][] = new int[N][M];
+        int Ivisited[][] = new int[N][M];
+        int Avisited[][] = new int[N][M];
+        
+        Queue<Pair> india = new LinkedList<>();
+        Queue<Pair> arab = new LinkedList<>();
+        
+        // putting the row attached to the indian ocean in the queue
+        
+        for(int i=0;i<M;i++){
+            india.add(new Pair(0,i));
+            indian[0][i] = 1;
+            Ivisited[0][i] = 1;
+        }
+        
+        // putting the column attached to the indian ocean in the queue
+        
+        for(int i=0;i<N;i++){
+            india.add(new Pair(i,0));
+            indian[i][0] = 1;
+            Ivisited[i][0] = 1;
+        }
+        
+        //doing the bfs for the indian ocean
+        
+        int deltaRow[] = {-1,0,1,0};
+        int deltaCol[] = {0,1,0,-1};
+        
+        while(!india.isEmpty()){
+            int currRow = india.peek().first;
+            int currCol = india.peek().second;
+            india.poll();
+            
+            
+            for(int i=0;i<4;i++){
+                int nrow = currRow+deltaRow[i];
+                int ncol = currCol+deltaCol[i];
+                
+                if(nrow>=0 && nrow<N && ncol>=0 && ncol<M && indian[nrow][ncol] == 0 && Ivisited[nrow][ncol] == 0 && mat[nrow][ncol]>=mat[currRow][currCol]){
+                    india.add(new Pair(nrow,ncol));
+                    Ivisited[nrow][ncol]= 1;
+                    indian[nrow][ncol] = 1;
+                }
+            }
+        }
+        
+        
+         // putting the row attached to the arabian ocean in the queue
+        
+        for(int i=0;i<M;i++){
+            arab.add(new Pair(N-1,i));
+            arabian[N-1][i] = 1;
+            Avisited[N-1][i] = 1;
+        }
+        
+        // putting the column attached to the arabian ocean in the queue
+        
+        for(int i=0;i<N;i++){
+            arab.add(new Pair(i,M-1));
+            arabian[i][M-1] = 1;
+            Avisited[i][M-1] = 1;
+        }
+        
+        
+        while(!arab.isEmpty()){
+            int currRow = arab.peek().first;
+            int currCol = arab.peek().second;
+            arab.poll();
+            
+            
+            for(int i=0;i<4;i++){
+                int nrow = currRow+deltaRow[i];
+                int ncol = currCol+deltaCol[i];
+                
+                if(nrow>=0 && nrow<N && ncol>=0 && ncol<M && arabian[nrow][ncol] == 0 && Avisited[nrow][ncol] == 0 && mat[nrow][ncol]>=mat[currRow][currCol]){
+                    arab.add(new Pair(nrow,ncol));
+                    Avisited[nrow][ncol]= 1;
+                    arabian[nrow][ncol] = 1;
+                }
+            }
+        }
+        
+        int ans = 0;
+        
+        for(int i=0;i<N;i++){
+            for(int j=0;j<M;j++){
+                if(indian[i][j] == 1 && arabian[i][j] ==1){
+                    ans++;
+                }
+            }
+            
+            
+        }
+       
+        return ans;
+        
+        
+        
+		
+	}
+}
+
+
+
+
+//// same can be done using dfs as well
